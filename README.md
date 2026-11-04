@@ -25,6 +25,12 @@ sub-path such as GitHub Pages. It uses the single-threaded ffmpeg core, so no sp
 COOP/COEP headers are required. Note that the core's `.wasm` file is ~32 MB, which is over
 some hosts' per-file limits (e.g. Cloudflare Pages' 25 MB).
 
+## Deploying to GitHub Pages
+
+`.github/workflows/deploy.yml` builds the site and publishes `dist/` on every push to `main`
+(or manually from the Actions tab). One-time setup: in the repository's **Settings → Pages**,
+set **Source** to **GitHub Actions**.
+
 ## How it works
 
 - `src/engine.ts` wraps ffmpeg.wasm. The chosen file is mounted with `WORKERFS`, so ffmpeg reads
