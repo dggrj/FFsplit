@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Extract the audio track from a video, right in your browser. Nothing is uploaded." />
+    <title>FFsplit</title>
+    <link rel="icon" id="favicon" type="image/svg+xml" href="./favicon.svg" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="header">
+        <h1>FFsplit</h1>
+        <p class="tagline">Pull the audio out of any video. Runs entirely in your browser, so your file never leaves your device.</p>
+      </header>
+
+      <!-- Step 1: pick a file -->
+      <label id="dropzone" class="dropzone" for="file-input">
+        <input id="file-input" type="file"
+          accept="video/*,audio/*,.mkv,.mka,.webm,.ts,.m2ts,.mts,.flv,.avi,.wmv,.mov,.m4v,.3gp,.vob,.ogv" />
+        <span class="dropzone-title">Choose a video</span>
+        <span class="dropzone-sub">or drag and drop it here</span>
+      </label>
+
+      <!-- Step 2: configure -->
+      <section id="editor" class="card" hidden>
+        <div class="file-row">
+          <div class="file-meta">
+            <div id="file-name" class="file-name"></div>
+            <div id="file-details" class="muted small"></div>
+          </div>
+          <button id="change-file" class="btn btn-ghost" type="button">Change</button>
+        </div>
+
+        <div id="probe-status" class="muted small" hidden></div>
+
+        <div id="preview-wrap" class="preview-wrap">
+          <video id="preview" playsinline preload="metadata" controls></video>
+        </div>
+        <div id="preview-note" class="note" hidden></div>
+
+        <div id="trim" class="block" hidden>
+          <div class="block-head">
+            <h2>Trim</h2>
+            <button id="trim-reset" class="btn btn-link" type="button">Reset</button>
+          </div>
+          <div id="slider" class="slider"></div>
+          <div class="trim-fields">
+            <label class="field">
+              <span>Start</span>
+              <input id="start-input" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" />
+            </label>
+            <div class="trim-length muted small">Length <strong id="length-label">0:00</strong></div>
+            <label class="field field-end">
+              <span>End</span>
+              <input id="end-input" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" />
+            </label>
+          </div>
+          <div id="trim-buttons" class="trim-buttons">
+            <button id="set-start" class="btn btn-small" type="button" title="Move the start to the video's current position">Set start here</button>
+            <button id="play-selection" class="btn btn-small" type="button">▶ Play selection</button>
+            <button id="set-end" class="btn btn-small" type="button" title="Move the end to the video's current position">Set end here</button>
+          </div>
+        </div>
+
+        <div id="tracks" class="block" hidden>
+          <h2>Audio track</h2>
+          <div id="track-list" class="track-list" role="radiogroup"></div>
+        </div>
+
+        <div id="format-block" class="block" hidden>
+          <h2>Format</h2>
+          <select id="format" class="select"></select>
+          <p id="format-hint" class="muted small"></p>
+        </div>
+
+        <div id="action" class="action">
+          <button id="extract" class="btn btn-primary btn-wide" type="button" disabled>Extract audio</button>
+
+          <div id="progress" class="progress-wrap" hidden>
+            <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+            <div class="progress-row small">
+              <span id="progress-label" class="muted">Starting…</span>
+              <span class="progress-actions">
+                <button id="notify-me" class="btn btn-link" type="button" hidden>Notify me when done</button>
+                <button id="cancel" class="btn btn-link" type="button">Cancel</button>
+              </span>
+            </div>
+          </div>
+
+          <div id="done" class="done" hidden>
+            <div class="done-text">
+              <strong>Your audio is ready.</strong>
+              <span id="done-detail" class="muted small"></span>
+            </div>
+            <a id="download" class="btn btn-primary" href="#" download>Download</a>
+          </div>
+
+          <div id="error" class="error" hidden>
+            <div id="error-text"></div>
+            <details id="error-log-wrap">
+              <summary class="small">Technical details</summary>
+              <pre id="error-log"></pre>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer muted small">
+        <span id="engine-status">Loading audio engine…</span>
+        <span>Powered by <a href="https://github.com/ffmpegwasm/ffmpeg.wasm" target="_blank" rel="noopener">ffmpeg.wasm</a> (<a href="https://ffmpeg.org/legal.html" target="_blank" rel="noopener">FFmpeg</a>, GPL).</span>
+      </footer>
+    </main>
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>
